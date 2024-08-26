@@ -21,6 +21,8 @@
 
 DECLARE_GLOBAL_DATA_PTR;
 
+#define RUMBLE_GPIO	15 /* GPIO0_B7 */
+
 #define ALIVE_LED_GPIO	17 /* GPIO0_C1 */
 #define WIFI_EN_GPIO	110 /* GPIO3_B6 */
 
@@ -35,6 +37,14 @@ bool is_odroidgo3(void)
 	else
 		return false;
 }
+
+void board_rumble(void)
+{
+	gpio_request(RUMBLE_GPIO, "rumble");
+	gpio_direction_output(RUMBLE_GPIO, 0);
+	gpio_free(RUMBLE_GPIO);
+}
+
 
 void board_alive_led(void)
 {
@@ -160,8 +170,9 @@ int rk_board_late_init(void)
 	if (is_odroidgo3())
 		disp_offs = 9;
 
+	board_rumble();
 	/* turn on blue led */
-	board_alive_led();
+	//board_alive_led();
 
 	/* set wifi_en as default high */
 	if (!is_odroidgo3())
@@ -194,10 +205,10 @@ int rk_board_late_init(void)
 #endif
 
 	/* show boot logo and version */
-	lcd_show_logo();
-	lcd_setfg_color("grey");
-	lcd_printf(0, 18 + disp_offs, 1, " %s", U_BOOT_VERSION);
-	lcd_printf(0, 19 + disp_offs, 1, " %s %s", U_BOOT_DATE, U_BOOT_TIME);
+	//lcd_show_logo();
+	//lcd_setfg_color("red");
+	//lcd_printf(0, 18 + disp_offs, 1, " %s", U_BOOT_VERSION);
+	//lcd_printf(0, 19 + disp_offs, 1, " %s %s", U_BOOT_DATE, U_BOOT_TIME);
 
 	if (!board_check_autotest()) {
 		board_run_autotest();
