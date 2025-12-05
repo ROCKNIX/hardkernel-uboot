@@ -204,4 +204,15 @@ int fat_opendir(const char *filename, struct fs_dir_stream **dirsp);
 int fat_readdir(struct fs_dir_stream *dirs, struct fs_dirent **dentp);
 void fat_closedir(struct fs_dir_stream *dirs);
 void fat_close(void);
+
+/**
+ * fat_uuid() - get FAT volume ID
+ *
+ * The FAT volume ID returned in @uuid_str as hexadecimal number in XXXX-XXXX
+ * format.
+ *
+ * @uuid_str:	caller allocated buffer of at least 10 bytes for the volume ID
+ * Return:	0 on success
+ */
+int fat_uuid(char *uuid_str);
 #endif /* _FAT_H_ */
